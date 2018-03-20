@@ -1,15 +1,77 @@
-name: my-snap-name # you probably want to 'snapcraft register <name>'
-version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
-summary: Single-line elevator pitch for your amazing snap # 79 char long summary
-description: |
-  This is my-snap's description. You have a paragraph or two to tell the
-  most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+name: waterfox
+version: master
+summary: Waterfox web browser
+description:  The 100% fresh, free-range, ethical browser
+confinement: strict
+grade: stable
 
-confinement: devmode # use 'strict' once you have the right plugs and slots
+apps:
+  waterfox:
+    command: desktop-launch $SNAP/waterfox
+    desktop: distribution/waterfox.desktop
+    environment:
+      DISABLE_WAYLAND: 1
+      HOME: "$SNAP_USER_COMMON"
+    plugs:
+      - avahi-observe
+      - browser-sandbox
+      - camera
+      - cups-control
+      - desktop
+      - desktop-legacy
+      - gsettings
+      - home
+      - network
+      - network-observe
+      - opengl
+      - pulseaudio
+      - screen-inhibit-control
+      - unity7
+      - upower-observe
+      - x11
+
+plugs:
+  browser-sandbox:
+    interface: browser-support
+    allow-sandbox: true
 
 parts:
-  my-part:
-    # See 'snapcraft plugins'
+  firefox:
+    plugin: dump
+    source: https://github.com/MrAlex94/Waterfox
+    stage-packages:
+      - libxt6
+      - libdbus-glib-1-2
+      - libasound2
+      - libpulse0
+      - libgl1-mesa-dri
+      - libgl1-mesa-glx
+      - libmirclient9
+      - desktop-file-utils
+      - ffmpeg
+      - libc-bin
+      - locales-all
+    after: [desktop-gtk3]
+
+  xdg-open:
+    after: [waterfox]
     plugin: nil
+    source: .
+    install: |
+      set -eux
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      install -m 644 mimeapps.list $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      update-desktop-database -v $SNAPCRAFT_PART_INSTALL/usr/share/applications
+    build-packages:
+      - desktop-file-utils
+    build-attributes: [no-system-libraries]
+
+  shared-mime-info:
+    after: [xdg-open]
+    plugin: nil
+    stage-packages:
+      - shared-mime-info
+    build-attributes: [no-system-libraries]
+    install: |
+      set -eux
+      update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
