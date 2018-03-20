@@ -39,6 +39,7 @@ parts:
   waterfox:
     plugin: dump
     source: https://github.com/MrAlex94/Waterfox
+    source-type: git
     stage-packages:
       - libxt6
       - libdbus-glib-1-2
