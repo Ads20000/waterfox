@@ -61,7 +61,7 @@ parts:
     install: |
       set -eux
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
-      install -m 644 snap/mimeapps.list $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      install -m 644 $SNAPCRAFT_PART_INSTALL/snap/mimeapps.list $SNAPCRAFT_PART_INSTALL/usr/share/applications
       update-desktop-database -v $SNAPCRAFT_PART_INSTALL/usr/share/applications
     build-packages:
       - desktop-file-utils
