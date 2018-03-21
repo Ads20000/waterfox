@@ -4,7 +4,7 @@
   Waterfox
 </h1>
 
-<p align="center"><b>This is the snap for Waterfox</b>, <i>"The 100% fresh, free-range, ethical browser"</i>. It works on Ubuntu, Fedora, Debian, and other major Linux
+<p align="center"><b>This is the snap for Waterfox</b>, <i>"The browser built for YOU"</i>. It works on Ubuntu, Fedora, Debian, and other major Linux
 distributions.</p>
 
 <p align="center">
